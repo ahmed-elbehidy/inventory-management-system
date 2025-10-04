@@ -1,0 +1,27 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# PyCharm / IDE files
+.idea/
+*.iml
+
+# Spyder IDE
+.spyproject/
+
+# OS / temp files
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Optional logs and temp
+*.log
