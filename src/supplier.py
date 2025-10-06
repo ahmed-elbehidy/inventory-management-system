@@ -1,8 +1,152 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
+from employees import connect_database
 
-from tomlkit import value
 
+def delete_supplier(invoice,treeview):
+    index = treeview.selection()
+    if not index:
+        messagebox.showerror('Error', 'No row is selected')
+        return
+    cursor, connection = connect_database()
+    if not cursor or not connection:
+        return
+    try:
+        cursor.execute('use inventory_system')
+        cursor.execute('DELETE FROM supplier_data WHERE invoice=%s',invoice)
+        connection.commit()
+        treeview_data(treeview)
+        messagebox.showinfo('Info','Record is deleted')
+    except Exception as e:
+        messagebox.showerror('Error',f'Error due to {e}')
+    finally:
+        cursor.close()
+        connection.close()
+
+def clear(invoice_entry,name_entry,contact_entry,description_text,treeview):
+    invoice_entry.delete(0,END)
+    name_entry.delete(0,END)
+    contact_entry.delete(0,END)
+    description_text.delete(1.0,END)
+    treeview.selection_remove(treeview.selection())
+
+
+def search_supplier(search_value,treeview):
+    if search_value == '':
+        messagebox.showerror('Error','Please enter invoice no.')
+    else:
+        cursor, connection = connect_database()
+        if not cursor or not connection:
+            return
+        try:
+            cursor.execute('use inventory_system')
+            cursor.execute('SELECT * FROM supplier_data WHERE invoice=%s',search_value)
+            record = cursor.fetchone()
+            if not record:
+                messagebox.showerror('Error', 'No record found')
+                return
+
+            treeview.delete(*treeview.get_children())
+            treeview.insert('',END,values=record)
+        except Exception as e:
+            messagebox.showerror('Error', f'Error due to {e}')
+        finally:
+            cursor.close()
+            connection.close()
+
+def show_all(treeview,search_entry):
+    treeview_data(treeview)
+    search_entry.delete(0,END)
+
+def update_supplier(invoice,name,contact,description,treeview):
+    index = treeview.selection()
+    if not index:
+        messagebox.showerror('Error','No row is selected')
+        return
+    try:
+        cursor, connection = connect_database()
+        if not cursor or not connection:
+            return
+        cursor.execute('use inventory_system')
+        cursor.execute('SELECT * FROM supplier_data WHERE invoice=%s',invoice)
+        current_data = cursor.fetchone()
+        current_data = current_data[1:]
+
+        new_data = (name,contact,description)
+
+        if current_data == new_data:
+            messagebox.showinfo('Info','No changes detected')
+            return
+
+        cursor.execute('UPDATE supplier_data SET name=%s,contact=%s,description=%s WHERE invoice=%s',(name,contact,description,invoice))
+        connection.commit()
+        messagebox.showinfo('Info','Data is updated')
+        treeview_data(treeview)
+    except Exception as e:
+        messagebox.showerror('Error',f'Error due to {e}')
+    finally:
+        cursor.close()
+        connection.close()
+
+
+def select_data(event,invoice_entry,name_entry,contact_entry,description_text,treeview):
+    index = treeview.selection()
+    content = treeview.item(index)
+    actual_content = content['values']
+    invoice_entry.delete(0,END)
+    name_entry.delete(0,END)
+    contact_entry.delete(0,END)
+    description_text.delete(1.0,END)
+
+    invoice_entry.insert(0,actual_content[0])
+    name_entry.insert(0,actual_content[1])
+    contact_entry.insert(0,actual_content[2])
+    description_text.insert(1.0,actual_content[3])
+
+
+def treeview_data(treeview):
+    cursor,connection = connect_database()
+    if not cursor or not connection:
+        return
+    try:
+        cursor.execute('use inventory_system')
+        cursor.execute('SELECT * FROM supplier_data')
+        records = cursor.fetchall()
+        treeview.delete(* treeview.get_children())
+        for record in records:
+            treeview.insert('',END,values=record)
+    except Exception as e:
+        messagebox.showerror('Error',f'Error due to {e}')
+    finally:
+        cursor.close()
+        connection.close()
+
+def add_supplier(invoice,name,contact,description,treeview):
+    if invoice == '' or name == '' or contact == '' or description == '':
+        messagebox.showerror('Error','All fields are required')
+    else:
+        cursor,connection = connect_database()
+        if not cursor or not connection:
+            return
+        try:
+            cursor.execute('use inventory_system')
+            cursor.execute('SELECT * FROM supplier_data WHERE invoice=%s',(invoice,))
+            if cursor.fetchone():
+                messagebox.showerror('Error','Id already exists')
+                return
+
+            cursor.execute('CREATE TABLE IF NOT EXISTS supplier_data (invoice INT PRIMARY KEY , name VARCHAR(100), contact VARCHAR(50), description TEXT)')
+
+            cursor.execute('INSERT INTO supplier_data VALUES(%s,%s,%s,%s)', (invoice,name,contact,description))
+            connection.commit()
+            messagebox.showinfo('Info','Data is inserted')
+            treeview_data(treeview)
+        except Exception as e:
+            messagebox.showerror('Error',f'Error due to {e}')
+        finally:
+            cursor.close()
+            connection.close()
 
 def supplier_form(window):
     global back_image
@@ -18,7 +162,7 @@ def supplier_form(window):
     )
     heading_label.place(x=0, y=0, relwidth=1)
 
-    back_image = PhotoImage(file='assets/icons/back_button.png')
+    back_image = PhotoImage(file='../assets/icons/back_button.png')
     back_button = Button(
         supplier_frame,
         image=back_image,
@@ -62,7 +206,8 @@ def supplier_form(window):
         width=8,
         cursor='hand2',
         fg='white',
-        bg='#0f4d7d'
+        bg='#0f4d7d',
+        command=lambda :add_supplier(invoice_entry.get(),name_entry.get(),contact_entry.get(),description_text.get(1.0,END).strip(),treeview)
     )
     add_button.grid(row=0, column=0, padx=20)
 
@@ -73,7 +218,8 @@ def supplier_form(window):
         width=8,
         cursor='hand2',
         fg='white',
-        bg='#0f4d7d'
+        bg='#0f4d7d',
+        command=lambda :update_supplier(invoice_entry.get(),name_entry.get(),contact_entry.get(),description_text.get(1.0,END).strip(),treeview)
     )
     update_button.grid(row=0, column=1)
 
@@ -84,7 +230,8 @@ def supplier_form(window):
         width=8,
         cursor='hand2',
         fg='white',
-        bg='#0f4d7d'
+        bg='#0f4d7d',
+        command=lambda :delete_supplier(invoice_entry.get(),treeview)
     )
     delete_button.grid(row=0, column=2, padx=20)
 
@@ -95,7 +242,8 @@ def supplier_form(window):
         width=8,
         cursor='hand2',
         fg='white',
-        bg='#0f4d7d'
+        bg='#0f4d7d',
+        command=lambda :clear(invoice_entry,name_entry,contact_entry,description_text,treeview)
     )
     clear_button.grid(row=0, column=3)
 
@@ -117,7 +265,8 @@ def supplier_form(window):
         width=8,
         cursor='hand2',
         fg='white',
-        bg='#0f4d7d'
+        bg='#0f4d7d',
+        command=lambda :search_supplier(search_entry.get(),treeview)
     )
     search_button.grid(row=0, column=2, padx=15)
 
@@ -128,7 +277,8 @@ def supplier_form(window):
         width=8,
         cursor='hand2',
         fg='white',
-        bg='#0f4d7d'
+        bg='#0f4d7d',
+        command=lambda :show_all(treeview,search_entry)
     )
     show_button.grid(row=0, column=3)
 
@@ -155,3 +305,6 @@ def supplier_form(window):
     treeview.column('name',width=160)
     treeview.column('contact',width=120)
     treeview.column('description',width=300)
+
+    treeview_data(treeview)
+    treeview.bind('<ButtonRelease-1>',lambda event:select_data(event,invoice_entry,name_entry,contact_entry,description_text,treeview))

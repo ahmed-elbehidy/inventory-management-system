@@ -2,6 +2,7 @@ from tkinter import *
 from employees import employee_form
 from supplier import supplier_form
 from PIL import Image, ImageTk
+from category import category_form
 
 
 
@@ -13,7 +14,7 @@ window.geometry('1270x668+0+0')
 window.resizable(0, 0)
 window.config(bg='white')
 
-bg_image = PhotoImage(file='assets/inventory.png')
+bg_image = PhotoImage(file='../assets/inventory.png')
 
 titleLabel = Label(
     window,
@@ -48,7 +49,7 @@ subtitleLabel.place(x=0, y=70, relwidth=1)
 leftFrame = Frame(window)
 leftFrame.place(x=0, y=102, width=200, relheight=0.86)
 
-original_image = Image.open('assets/images/logo.png')
+original_image = Image.open('../assets/images/logo.png')
 scale_factor = 1.5
 new_width = int(original_image.width * scale_factor)
 new_height = int(original_image.height * scale_factor)
@@ -62,7 +63,7 @@ imageLabel.pack(pady=10)
 menuLabel = Label(leftFrame, text='Menu', font=('times new roman', 20), bg='#009688')
 menuLabel.pack(fill=X)
 
-employee_icon = PhotoImage(file='assets/icons/man.png')
+employee_icon = PhotoImage(file='../assets/icons/man.png')
 employee_button = Button(
     leftFrame,
     image=employee_icon,
@@ -76,7 +77,7 @@ employee_button = Button(
 )
 employee_button.pack(fill=X)
 
-supplier_icon = PhotoImage(file='assets/icons/supplier.png')
+supplier_icon = PhotoImage(file='../assets/icons/supplier.png')
 supplier_button = Button(
     leftFrame,
     image=supplier_icon,
@@ -90,7 +91,7 @@ supplier_button = Button(
 )
 supplier_button.pack(fill=X)
 
-category_icon = PhotoImage(file='assets/icons/category.png')
+category_icon = PhotoImage(file='../assets/icons/category.png')
 category_button = Button(
     leftFrame,
     image=category_icon,
@@ -99,11 +100,12 @@ category_button = Button(
     font=('times new roman', 20, 'bold'),
     anchor='w',
     padx=10,
-    width=200
+    width=200,
+    command=lambda :category_form(window)
 )
 category_button.pack(fill=X)
 
-product_icon = PhotoImage(file='assets/icons/product.png')
+product_icon = PhotoImage(file='../assets/icons/product.png')
 product_button = Button(
     leftFrame,
     image=product_icon,
@@ -116,7 +118,7 @@ product_button = Button(
 )
 product_button.pack(fill=X)
 
-sales_icon = PhotoImage(file='assets/icons/sales.png')
+sales_icon = PhotoImage(file='../assets/icons/sales.png')
 sales_button = Button(
     leftFrame,
     image=sales_icon,
@@ -129,7 +131,7 @@ sales_button = Button(
 )
 sales_button.pack(fill=X)
 
-exit_icon = PhotoImage(file='assets/icons/exit.png')
+exit_icon = PhotoImage(file='../assets/icons/exit.png')
 exit_button = Button(
     leftFrame,
     image=exit_icon,
@@ -145,7 +147,7 @@ exit_button.pack(fill=X)
 # cards
 emp_frame = Frame(window, bg='#2C3E50', bd=3, relief=RIDGE)
 emp_frame.place(x=400, y=125, height=170, width=280)
-total_emp_icon = PhotoImage(file='assets/total_emp.png')
+total_emp_icon = PhotoImage(file='../assets/total_emp.png')
 total_emp_icon_label = Label(emp_frame, image=total_emp_icon, bg='#2C3E50')
 total_emp_icon_label.pack(pady=10)
 
@@ -169,7 +171,7 @@ total_emp_count_label.pack()
 
 sup_frame = Frame(window, bg='#8E44AD', bd=3, relief=RIDGE)
 sup_frame.place(x=800, y=125, height=170, width=280)
-total_sup_icon = PhotoImage(file='assets/total_sup.png')
+total_sup_icon = PhotoImage(file='../assets/total_sup.png')
 total_sup_icon_label = Label(sup_frame, image=total_sup_icon, bg='#8E44AD')
 total_sup_icon_label.pack(pady=10)
 
@@ -193,7 +195,7 @@ total_sup_count_label.pack()
 
 cat_frame = Frame(window, bg='#27AE60', bd=3, relief=RIDGE)
 cat_frame.place(x=400, y=310, height=170, width=280)
-total_cat_icon = PhotoImage(file='assets/total_cat.png')
+total_cat_icon = PhotoImage(file='../assets/total_cat.png')
 total_cat_icon_label = Label(cat_frame, image=total_cat_icon, bg='#27AE60')
 total_cat_icon_label.pack(pady=10)
 
@@ -217,7 +219,7 @@ total_cat_count_label.pack()
 
 prod_frame = Frame(window, bg='#0F3460', bd=3, relief=RIDGE)
 prod_frame.place(x=800, y=310, height=170, width=280)
-total_prod_icon = PhotoImage(file='assets/total_prod.png')
+total_prod_icon = PhotoImage(file='../assets/total_prod.png')
 total_prod_icon_label = Label(prod_frame, image=total_prod_icon, bg='#0F3460')
 total_prod_icon_label.pack(pady=10)
 
@@ -241,7 +243,7 @@ total_prod_count_label.pack()
 
 sales_frame = Frame(window, bg='#E74C3C', bd=3, relief=RIDGE)
 sales_frame.place(x=600, y=495, height=170, width=280)
-total_sales_icon = PhotoImage(file='assets/total_sales.png')
+total_sales_icon = PhotoImage(file='../assets/total_sales.png')
 total_sales_icon_label = Label(sales_frame, image=total_sales_icon, bg='#E74C3C')
 total_sales_icon_label.pack(pady=10)
 

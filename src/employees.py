@@ -242,7 +242,7 @@ def employee_form(window):
     )
     heading_label.place(x=0, y=0, relwidth=1)
 
-    back_image = PhotoImage(file='assets/icons/back_button.png')
+    back_image = PhotoImage(file='../assets/icons/back_button.png')
     top_frame = Frame(employee_frame, bg='white')
     top_frame.place(x=0, y=40, relwidth=1, height=235)
 
