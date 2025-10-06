@@ -32,7 +32,7 @@ This system helps you manage employees, suppliers, categories, products, and sal
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/inventory-management-system.git
+   git clone https://github.com/ahmed-elbehidy/inventory-management-system.git
 1. Navigate to the project folder:
    ```bash
    cd inventory-management-system
