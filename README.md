@@ -39,12 +39,3 @@ This system helps you manage employees, suppliers, categories, products, and sal
 1. Run the application:
    ```bash
    python src/dashboard.py
-
-
-
-
-
-
-
-
-
