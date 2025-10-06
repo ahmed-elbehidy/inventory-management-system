@@ -3,6 +3,14 @@ from employees import employee_form
 from supplier import supplier_form
 from PIL import Image, ImageTk
 from category import category_form
+import os
+from tkinter import PhotoImage
+
+# Get the folder of the current file (dashboard.py)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+image_path = os.path.join(current_dir, "..", "assets", "inventory.png")
+
+bg_image = PhotoImage(file=image_path)
 
 
 
@@ -14,7 +22,9 @@ window.geometry('1270x668+0+0')
 window.resizable(0, 0)
 window.config(bg='white')
 
-bg_image = PhotoImage(file='../assets/inventory.png')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+image_path = os.path.join(current_dir, "..", "assets", "inventory.png")
+bg_image = PhotoImage(file=image_path)
 
 titleLabel = Label(
     window,
