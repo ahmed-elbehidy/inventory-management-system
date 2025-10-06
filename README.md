@@ -28,3 +28,23 @@ This system helps you manage employees, suppliers, categories, products, and sal
 
 ---
 
+## 🚀 How to Run
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/your-username/inventory-management-system.git
+1. Navigate to the project folder:
+   ```bash
+   cd inventory-management-system
+1. Run the application:
+   ```bash
+   python src/dashboard.py
+
+
+
+
+
+
+
+
+
