@@ -1,10 +1,79 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+from employees import connect_database
 
-def add_category(id,name,description):
+def delete_category(treeview):
+    index = treeview.selection()
+    content = treeview.item(index)
+    row = content['values']
+    id = row[0]
+    if not index:
+        messagebox.showerror('Error', 'No row is selected')
+        return
+    cursor, connection = connect_database()
+    if not cursor or not connection:
+        return
+    try:
+        cursor.execute('use inventory_system')
+        cursor.execute('DELETE FROM category_data WHERE id=%s', id)
+        connection.commit()
+        treeview_data(treeview)
+        messagebox.showinfo('Info', 'Record is deleted')
+    except Exception as e:
+        messagebox.showerror('Error', f'Error due to {e}')
+    finally:
+        cursor.close()
+        connection.close()
+
+
+def clear(id_entry,category_name_entry,description_text):
+    id_entry.delete(0,END)
+    category_name_entry.delete(0,END)
+    description_text.delete(1.0,END)
+
+def treeview_data(treeview):
+    cursor,connection = connect_database()
+    if not cursor or not connection:
+        return
+    try:
+        cursor.execute('use inventory_system')
+        cursor.execute('SELECT * FROM category_data')
+        records = cursor.fetchall()
+        treeview.delete(* treeview.get_children())
+        for record in records:
+            treeview.insert('',END,values=record)
+    except Exception as e:
+        messagebox.showerror('Error',f'Error due to {e}')
+    finally:
+        cursor.close()
+        connection.close()
+
+def add_category(id,name,description,treeview):
     if id == '' or name == '' or description =='':
         messagebox.showerror('Error', 'All fields are required')
+    else:
+        cursor,connection = connect_database()
+        if not cursor or not connection:
+            return
+        try:
+            cursor.execute('use inventory_system')
+            cursor.execute('CREATE TABLE IF NOT EXISTS category_data (id INT PRIMARY KEY , name VARCHAR(100), description TEXT)')
+
+            cursor.execute('SELECT * FROM category_data WHERE id=%s', (id,))
+            if cursor.fetchone():
+                messagebox.showerror('Error', 'Id already exists')
+                return
+
+            cursor.execute('INSERT INTO category_data VALUES(%s,%s,%s)', (id, name, description))
+            connection.commit()
+            messagebox.showinfo('Info', 'Data is inserted')
+            treeview_data(treeview)
+        except Exception as e:
+            messagebox.showerror('Error', f'Error due to {e}')
+        finally:
+            cursor.close()
+            connection.close()
 
 
 
@@ -56,7 +125,7 @@ def category_form(window):
     description_text.grid(row=2, column=1)
 
     button_frame = Frame(category_frame, bg='white')
-    button_frame.place(x=650, y=280)
+    button_frame.place(x=585, y=280)
     add_button = Button(
         button_frame,
         text='Add',
@@ -65,7 +134,7 @@ def category_form(window):
         cursor='hand2',
         fg='white',
         bg='#0f4d7d',
-        command=lambda :add_category(id_entry.get(),category_name_entry.get(),description_text.get(1.0,END).strip())
+        command=lambda :add_category(id_entry.get(),category_name_entry.get(),description_text.get(1.0,END).strip(),treeview)
     )
     add_button.grid(row=0, column=0, padx=20)
 
@@ -77,8 +146,21 @@ def category_form(window):
         cursor='hand2',
         fg='white',
         bg='#0f4d7d',
+        command=lambda :delete_category(treeview)
     )
     delete_button.grid(row=0, column=1, padx=20)
+
+    clear_button = Button(
+        button_frame,
+        text='Clear',
+        font=('times new roman', 14),
+        width=8,
+        cursor='hand2',
+        fg='white',
+        bg='#0f4d7d',
+        command=lambda :clear(id_entry,category_name_entry,description_text)
+    )
+    clear_button.grid(row=0, column=2, padx=20)
 
     treeview_frame = Frame(category_frame, bg='white')
     treeview_frame.place(x=530,y=340,height=200,width=500)
@@ -105,3 +187,4 @@ def category_form(window):
     treeview.column('id', width=80)
     treeview.column('name', width=140)
     treeview.column('description', width=300)
+    treeview_data(treeview)
