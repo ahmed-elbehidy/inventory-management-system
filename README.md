@@ -39,3 +39,11 @@ This system helps you manage employees, suppliers, categories, products, and sal
 1. Run the application:
    ```bash
    python src/dashboard.py
+
+---
+
+## Screenshots
+<img src="screen_shots/1.png" alt="Main Window" width="600"/>
+<img src="screen_shots/2.png" alt="Menu Section" width="600"/>
+<img src="screen_shots/3.png" alt="Menu Section" width="600"/>
+
