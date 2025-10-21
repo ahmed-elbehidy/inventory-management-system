@@ -269,7 +269,7 @@ def employee_form(window):
     search_entry = Entry(
         search_frame,
         font=('times new roman', 12),
-        bg='lightyellow'
+        bg='white'
     )
     search_entry.grid(row=0, column=1)
     search_button = Button(
@@ -347,17 +347,17 @@ def employee_form(window):
 
     empid_label = Label(detail_frame, text='EmpId', font=('times new roman', 12), bg='white')
     empid_label.grid(row=0, column=0, padx=20, pady=10, sticky='w')
-    empid_entry = Entry(detail_frame, font=('times new roman', 12), bg='lightyellow')
+    empid_entry = Entry(detail_frame, font=('times new roman', 12), bg='white')
     empid_entry.grid(row=0, column=1, padx=20, pady=10)
 
     name_label = Label(detail_frame, text='Name', font=('times new roman', 12), bg='white')
     name_label.grid(row=0, column=2, padx=20, pady=10, sticky='w')
-    name_entry = Entry(detail_frame, font=('times new roman', 12), bg='lightyellow')
+    name_entry = Entry(detail_frame, font=('times new roman', 12), bg='white')
     name_entry.grid(row=0, column=3, padx=20, pady=10)
 
     email_label = Label(detail_frame, text='Email', font=('times new roman', 12), bg='white')
     email_label.grid(row=0, column=4, padx=20, pady=10, sticky='w')
-    email_entry = Entry(detail_frame, font=('times new roman', 12), bg='lightyellow')
+    email_entry = Entry(detail_frame, font=('times new roman', 12), bg='white')
     email_entry.grid(row=0, column=5, padx=20, pady=10)
 
     gender_label = Label(detail_frame, text='Gender', font=('times new roman', 12), bg='white')
@@ -381,7 +381,7 @@ def employee_form(window):
 
     contact_label = Label(detail_frame, text='Contact', font=('times new roman', 12), bg='white')
     contact_label.grid(row=1, column=4, padx=20, pady=10, sticky='w')
-    contact_entry = Entry(detail_frame, font=('times new roman', 12), bg='lightyellow')
+    contact_entry = Entry(detail_frame, font=('times new roman', 12), bg='white')
     contact_entry.grid(row=1, column=5, padx=20, pady=10, sticky='w')
 
     employeement_type_label = Label(detail_frame, text='Employeement Type', font=('times new roman', 12), bg='white')
@@ -423,7 +423,7 @@ def employee_form(window):
 
     address_label = Label(detail_frame, text='Address', font=('times new roman', 12), bg='white')
     address_label.grid(row=3, column=0, padx=20, pady=10, sticky='w')
-    address_text = Text(detail_frame, width=20, height=3, font=('times new roman', 12), bg='lightyellow')
+    address_text = Text(detail_frame, width=20, height=3, font=('times new roman', 12), bg='white')
     address_text.grid(row=3, column=1, rowspan=2)
 
     doj_label = Label(detail_frame, text='Date Of Joining', font=('times new roman', 12), bg='white')
@@ -435,7 +435,7 @@ def employee_form(window):
 
     salary_label = Label(detail_frame, text='Salary', font=('times new roman', 12), bg='white')
     salary_label.grid(row=3, column=4, padx=20, pady=10, sticky='w')
-    salary_entry = Entry(detail_frame, font=('times new roman', 12), bg='lightyellow')
+    salary_entry = Entry(detail_frame, font=('times new roman', 12), bg='white')
     salary_entry.grid(row=3, column=5, padx=20, pady=10)
 
     user_type_label = Label(detail_frame, text='User Type', font=('times new roman', 12), bg='white')
@@ -452,7 +452,7 @@ def employee_form(window):
 
     password_label = Label(detail_frame, text='Password', font=('times new roman', 12), bg='white')
     password_label.grid(row=4, column=4, padx=20, pady=10, sticky='w')
-    password_entry = Entry(detail_frame, font=('times new roman', 12), bg='lightyellow')
+    password_entry = Entry(detail_frame, font=('times new roman', 12), bg='white')
     password_entry.grid(row=4, column=5, padx=20, pady=10)
 
     button_frame = Frame(employee_frame, bg='white')
@@ -520,3 +520,4 @@ def employee_form(window):
                                                             doj_date_entry, salary_entry, user_type_combobox,
                                                             password_entry))
     create_database_table()
+    return employee_frame

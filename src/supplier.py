@@ -64,10 +64,10 @@ def update_supplier(invoice,name,contact,description,treeview):
     if not index:
         messagebox.showerror('Error','No row is selected')
         return
+    cursor, connection = connect_database()
+    if not cursor or not connection:
+        return
     try:
-        cursor, connection = connect_database()
-        if not cursor or not connection:
-            return
         cursor.execute('use inventory_system')
         cursor.execute('SELECT * FROM supplier_data WHERE invoice=%s',invoice)
         current_data = cursor.fetchone()
@@ -131,12 +131,14 @@ def add_supplier(invoice,name,contact,description,treeview):
             return
         try:
             cursor.execute('use inventory_system')
-            cursor.execute('SELECT * FROM supplier_data WHERE invoice=%s',(invoice,))
-            if cursor.fetchone():
-                messagebox.showerror('Error','Id already exists')
-                return
+
 
             cursor.execute('CREATE TABLE IF NOT EXISTS supplier_data (invoice INT PRIMARY KEY , name VARCHAR(100), contact VARCHAR(50), description TEXT)')
+
+            cursor.execute('SELECT * FROM supplier_data WHERE invoice=%s', (invoice,))
+            if cursor.fetchone():
+                messagebox.showerror('Error', 'Invoice No. already exists')
+                return
 
             cursor.execute('INSERT INTO supplier_data VALUES(%s,%s,%s,%s)', (invoice,name,contact,description))
             connection.commit()
@@ -179,22 +181,22 @@ def supplier_form(window):
 
     invoice_label = Label(left_frame, text='Invoice No.', font=('times new roman',14,'bold'), bg='white')
     invoice_label.grid(row=0,column=0,padx=(20,40), sticky='w')
-    invoice_entry = Entry(left_frame, font=('times new roman',14,'bold'), bg='lightyellow')
+    invoice_entry = Entry(left_frame, font=('times new roman',14,'bold'), bg='white')
     invoice_entry.grid(row=0,column=1)
 
     name_label = Label(left_frame, text='Supplier Name', font=('times new roman', 14, 'bold'), bg='white')
     name_label.grid(row=1, column=0, padx=(20,40), pady=25, sticky='w')
-    name_entry = Entry(left_frame, font=('times new roman', 14, 'bold'), bg='lightyellow')
+    name_entry = Entry(left_frame, font=('times new roman', 14, 'bold'), bg='white')
     name_entry.grid(row=1, column=1)
 
     contact_label = Label(left_frame, text='Supplier Contact', font=('times new roman', 14, 'bold'), bg='white')
     contact_label.grid(row=2, column=0, padx=(20,40), sticky='w')
-    contact_entry = Entry(left_frame, font=('times new roman', 14, 'bold'), bg='lightyellow')
+    contact_entry = Entry(left_frame, font=('times new roman', 14, 'bold'), bg='white')
     contact_entry.grid(row=2, column=1)
 
     description_label = Label(left_frame, text='Description', font=('times new roman', 14, 'bold'), bg='white')
     description_label.grid(row=3, column=0, padx=(20,40), sticky='nw', pady=25)
-    description_text  = Text(left_frame, width=25, height=6, bd=2, bg='lightyellow')
+    description_text  = Text(left_frame, width=25, height=6, bd=2, bg='white')
     description_text.grid(row=3,column=1,pady=25)
 
     button_frame = Frame(left_frame, bg='white')
@@ -255,7 +257,7 @@ def supplier_form(window):
     search_frame.pack(pady=(0,20))
     num_label = Label(search_frame, text='Invoice No.', font=('times new roman', 14, 'bold'), bg='white')
     num_label.grid(row=0, column=0, padx=(0,15), sticky='w')
-    search_entry = Entry(search_frame, font=('times new roman', 14, 'bold'), bg='lightyellow', width=12)
+    search_entry = Entry(search_frame, font=('times new roman', 14, 'bold'), bg='white', width=12)
     search_entry.grid(row=0, column=1)
 
     search_button = Button(

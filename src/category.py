@@ -111,17 +111,17 @@ def category_form(window):
 
     id_label = Label(detalis_frame, text='Id.', font=('times new roman', 14, 'bold'), bg='white')
     id_label.grid(row=0, column=0, padx=20, sticky='w')
-    id_entry = Entry(detalis_frame, font=('times new roman', 14, 'bold'), bg='lightyellow')
+    id_entry = Entry(detalis_frame, font=('times new roman', 14, 'bold'), bg='white')
     id_entry.grid(row=0, column=1)
 
     category_name_label = Label(detalis_frame, text='Category Name.', font=('times new roman', 14, 'bold'), bg='white')
     category_name_label.grid(row=1, column=0, padx=20, sticky='w')
-    category_name_entry = Entry(detalis_frame, font=('times new roman', 14, 'bold'), bg='lightyellow')
+    category_name_entry = Entry(detalis_frame, font=('times new roman', 14, 'bold'), bg='white')
     category_name_entry.grid(row=1, column=1, pady=20)
 
     description_label = Label(detalis_frame, text='Description.', font=('times new roman', 14, 'bold'), bg='white')
     description_label.grid(row=2, column=0, padx=20, sticky='nw')
-    description_text = Text(detalis_frame, width=25, height=6, bd=2, bg='lightyellow')
+    description_text = Text(detalis_frame, width=25, height=6, bd=2, bg='white')
     description_text.grid(row=2, column=1)
 
     button_frame = Frame(category_frame, bg='white')
@@ -188,3 +188,7 @@ def category_form(window):
     treeview.column('name', width=140)
     treeview.column('description', width=300)
     treeview_data(treeview)
+<<<<<<< HEAD
+=======
+    return category_frame
+>>>>>>> 0af3e64 (Update index.html)

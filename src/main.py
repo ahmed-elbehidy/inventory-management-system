@@ -1,29 +1,109 @@
 from tkinter import *
+
+from dill.pointers import parent
+
 from employees import employee_form
 from supplier import supplier_form
 from PIL import Image, ImageTk
 from category import category_form
 import os
 from tkinter import PhotoImage
+<<<<<<< HEAD:src/dashboard.py
 
 # Get the folder of the current file (dashboard.py)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(current_dir, "..", "assets", "inventory.png")
 
 bg_image = PhotoImage(file=image_path)
+=======
+from products import product_form
+from employees import connect_database
+from tkinter import messagebox
+import time
+>>>>>>> 0af3e64 (Update index.html):src/main.py
 
 
+def update():
+    cursor,connection = connect_database()
+    if not cursor or not connection:
+        return
+    cursor.execute('USE inventory_system')
+    cursor.execute('SELECT * FROM employee_data')
+    emp_records = cursor.fetchall()
+    total_emp_count_label.config(text=len(emp_records))
+
+    cursor.execute('SELECT * FROM supplier_data')
+    sup_records = cursor.fetchall()
+    total_sup_count_label.config(text=len(sup_records))
+
+    cursor.execute('SELECT * FROM category_data')
+    cat_records = cursor.fetchall()
+    total_cat_count_label.config(text=len(cat_records))
+
+    cursor.execute('SELECT * FROM product_data')
+    prod_records = cursor.fetchall()
+    total_prod_count_label.config(text=len(prod_records))
+
+    date_time = time.strftime('%I:%M:%S %p on %A, %B %d, %Y')
+    subtitleLabel.config(text=f'Welcome Admin\t\t\t\t\t\t\t\t\t\t{date_time}')
+    subtitleLabel.after(1000,update)
+
+def tax_window():
+    def save_tax():
+        value = tax_count.get()
+        cursor,connection = connect_database()
+        if not cursor or not connection:
+            return
+        cursor.execute('use inventory_system')
+        cursor.execute('CREATE TABLE IF NOT EXISTS tax_table (id INT PRIMARY KEY, tax DECIMAL(5,2))')
+        cursor.execute('SELECT id FROM tax_table WHERE id=1')
+        if cursor.fetchone():
+            cursor.execute('UPDATE tax_table SET tax=%s WHERE id=1',value)
+        else:
+            cursor.execute('INSERT INTO tax_table (id,tax) VALUES (1,%s)',value)
+        connection.commit()
+        messagebox.showinfo('Success',f'Tax is set to {value}% and saved successfully.',parent=tax_root)
+
+    tax_root = Toplevel()
+    tax_root.title('Tax window')
+    tax_root.geometry('300x200')
+    tax_root.grab_set()
+    tax_percentage = Label(tax_root,text='Enter Tax Percentage(%)', font=('arial',12))
+    tax_percentage.pack(pady=10)
+    tax_count = Spinbox(tax_root,from_=0, to=100, font=('arial',12))
+    tax_count.pack(pady=10)
+    save_button = Button(
+        tax_root,
+        text='Save',
+        font=('arial', 12, 'bold'),
+        bg='#4d636d',
+        fg='white',
+        width=8,
+        command= save_tax
+    )
+    save_button.pack(pady=20)
+
+current_frame = None
+def show_form(form_function):
+    global current_frame
+    if current_frame:
+        current_frame.place_forget()
+    current_frame = form_function(window)
 
 # GUI Part
 window = Tk()
 
 window.title('Dashboard')
-window.geometry('1270x668+0+0')
+window.geometry('1270x665+0+0')
 window.resizable(0, 0)
 window.config(bg='white')
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(current_dir, "..", "assets", "inventory.png")
+<<<<<<< HEAD:src/dashboard.py
+=======
+
+>>>>>>> 0af3e64 (Update index.html):src/main.py
 bg_image = PhotoImage(file=image_path)
 
 titleLabel = Label(
@@ -66,12 +146,10 @@ new_height = int(original_image.height * scale_factor)
 resized_image = original_image.resize((new_width, new_height), Image.LANCZOS)
 logoImage = ImageTk.PhotoImage(resized_image)
 imageLabel = Label(leftFrame, image=logoImage, bg='#0f4d7d')
-imageLabel.pack(pady=10)
+imageLabel.pack(pady=0)
 
 
 # menu
-menuLabel = Label(leftFrame, text='Menu', font=('times new roman', 20), bg='#009688')
-menuLabel.pack(fill=X)
 
 employee_icon = PhotoImage(file='../assets/icons/man.png')
 employee_button = Button(
@@ -83,7 +161,7 @@ employee_button = Button(
     anchor='w',
     padx=10,
     width=200,
-    command=lambda: employee_form(window)
+    command=lambda: show_form(employee_form)
 )
 employee_button.pack(fill=X)
 
@@ -97,7 +175,7 @@ supplier_button = Button(
     anchor='w',
     padx=10,
     width=200,
-    command=lambda: supplier_form(window)
+    command=lambda: show_form(supplier_form)
 )
 supplier_button.pack(fill=X)
 
@@ -111,7 +189,7 @@ category_button = Button(
     anchor='w',
     padx=10,
     width=200,
-    command=lambda :category_form(window)
+    command=lambda :show_form(category_form)
 )
 category_button.pack(fill=X)
 
@@ -124,7 +202,8 @@ product_button = Button(
     font=('times new roman', 20, 'bold'),
     anchor='w',
     padx=10,
-    width=200
+    width=200,
+    command=lambda :show_form(product_form)
 )
 product_button.pack(fill=X)
 
@@ -140,6 +219,20 @@ sales_button = Button(
     width=200
 )
 sales_button.pack(fill=X)
+
+tax_icon = PhotoImage(file='../assets/icons/taxes.png')
+tax_button = Button(
+    leftFrame,
+    image=tax_icon,
+    compound=LEFT,
+    text=' Tax',
+    font=('times new roman', 20, 'bold'),
+    anchor='w',
+    padx=10,
+    width=200,
+    command=lambda :tax_window()
+)
+tax_button.pack(fill=X)
 
 exit_icon = PhotoImage(file='../assets/icons/exit.png')
 exit_button = Button(
@@ -274,5 +367,7 @@ total_sales_count_label = Label(
     font=('times new roman', 30, 'bold')
 )
 total_sales_count_label.pack()
+
+update()
 
 window.mainloop()
