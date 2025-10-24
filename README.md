@@ -1,4 +1,4 @@
-#  Inventory Management System (Python + Tkinter + MySQL)
+<img width="1270" height="695" alt="image" src="https://github.com/user-attachments/assets/d084ed37-f508-46a6-b1e5-552a3e9c89a1" />#  Inventory Management System (Python + Tkinter + MySQL)
 
 The **Inventory Management System** is a desktop application built with **Python (Tkinter)** for the graphical user interface and **MySQL** as the database.  
 This system helps you manage employees, suppliers, categories, products, and sales in a simple and efficient way.
@@ -43,4 +43,8 @@ This system helps you manage employees, suppliers, categories, products, and sal
 ---
 
 ## Screenshots
-
+<img src="screenshots/1.png" alt="Main Window" width="400"/>
+<img src="screenshots/employees.png" alt="Menu Section" width="400"/>
+<img src="screenshots/category.png" alt="Menu Section" width="400"/>
+<img src="screenshots/supplier.png" alt="Menu Section" width="400"/>
+<img src="screenshots/product.png" alt="Menu Section" width="400"/>
