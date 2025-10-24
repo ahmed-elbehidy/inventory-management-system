@@ -36,7 +36,7 @@ This system helps you manage employees, suppliers, categories, products, and sal
    cd inventory-management-system
 1. Run the application:
    ```bash
-   python src/mian.py
+   python src/main.py
 
 ---
 
