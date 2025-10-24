@@ -2,6 +2,11 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from employees import connect_database
+import os
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+ASSETS_DIR = BASE_DIR / "assets"
+ICONS_DIR = ASSETS_DIR / "icons"
 
 
 def show_all(search_combobox,search_entry,treeview):
@@ -195,7 +200,7 @@ def product_form(window):
     product_frame = Frame(window, width=1070, height=567, bg='white')
     product_frame.place(x=200, y=100)
 
-    back_image = PhotoImage(file='../assets/icons/back_button.png')
+    back_image = PhotoImage(file=str(ICONS_DIR / "back_button.png"))
     back_button = Button(
         product_frame,
         image=back_image,

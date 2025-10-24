@@ -1,16 +1,22 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-
-from debugpy.common.timestamp import current
-from nbclient import execute
 from tkcalendar import DateEntry
 import pymysql
+import os
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+ASSETS_DIR = BASE_DIR / "assets"
+ICONS_DIR = ASSETS_DIR / "icons"
 
 
 def connect_database():
     try:
-        connection = pymysql.connect(host='localhost', user='root', password='1245')
+        connection = pymysql.connect(
+            host='localhost',
+            user='root',
+            password='1245'
+        )
         cursor = connection.cursor()
     except:
         messagebox.showerror('Error', 'Database connectivity issue, open mysql command line client')
@@ -242,7 +248,7 @@ def employee_form(window):
     )
     heading_label.place(x=0, y=0, relwidth=1)
 
-    back_image = PhotoImage(file='../assets/icons/back_button.png')
+    back_image = PhotoImage(file=str(ICONS_DIR / "back_button.png"))
     top_frame = Frame(employee_frame, bg='white')
     top_frame.place(x=0, y=40, relwidth=1, height=235)
 

@@ -2,6 +2,11 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from employees import connect_database
+import os
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+ASSETS_DIR = BASE_DIR / "assets"
+ICONS_DIR = ASSETS_DIR / "icons"
 
 
 def delete_supplier(invoice,treeview):
@@ -164,7 +169,7 @@ def supplier_form(window):
     )
     heading_label.place(x=0, y=0, relwidth=1)
 
-    back_image = PhotoImage(file='../assets/icons/back_button.png')
+    back_image = PhotoImage(file=str(ICONS_DIR / "back_button.png"))
     back_button = Button(
         supplier_frame,
         image=back_image,

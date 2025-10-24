@@ -2,6 +2,12 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from employees import connect_database
+import os
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+ASSETS_DIR = BASE_DIR / "assets"
+ICONS_DIR = ASSETS_DIR / "icons"
+
 
 def delete_category(treeview):
     index = treeview.selection()
@@ -31,6 +37,18 @@ def clear(id_entry,category_name_entry,description_text):
     id_entry.delete(0,END)
     category_name_entry.delete(0,END)
     description_text.delete(1.0,END)
+
+def select_data(event,id_entry,category_name_entry,description_text,treeview):
+    index = treeview.selection()
+    content = treeview.item(index)
+    actual_content = content['values']
+    id_entry.delete(0,END)
+    category_name_entry.delete(0,END)
+    description_text.delete(1.0,END)
+
+    id_entry.insert(0, actual_content[0])
+    category_name_entry.insert(0, actual_content[1])
+    description_text.insert(1.0, actual_content[2])
 
 def treeview_data(treeview):
     cursor,connection = connect_database()
@@ -91,7 +109,7 @@ def category_form(window):
     )
     heading_label.place(x=0, y=0, relwidth=1)
 
-    back_image = PhotoImage(file='../assets/icons/back_button.png')
+    back_image = PhotoImage(file=str(ICONS_DIR / "back_button.png"))
     back_button = Button(
         category_frame,
         image=back_image,
@@ -102,7 +120,7 @@ def category_form(window):
     )
     back_button.place(x=10, y=30)
 
-    logo = PhotoImage(file='../assets/product_category.png')
+    logo = PhotoImage(file=str(ASSETS_DIR / "product_category.png"))
     label = Label(category_frame,image=logo, bg='white')
     label.place(x=30,y=100)
 
@@ -188,7 +206,6 @@ def category_form(window):
     treeview.column('name', width=140)
     treeview.column('description', width=300)
     treeview_data(treeview)
-<<<<<<< HEAD
-=======
+    treeview.bind('<ButtonRelease-1>',
+                  lambda event: select_data(event, id_entry, category_name_entry, description_text,treeview))
     return category_frame
->>>>>>> 0af3e64 (Update index.html)
