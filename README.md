@@ -43,9 +43,4 @@ This system helps you manage employees, suppliers, categories, products, and sal
 ---
 
 ## Screenshots
-<img src="screen-shots/1.png" alt="Main Window" width="600"/>
-<img src="screen-shots/employees.png" alt="Menu Section" width="600"/>
-<img src="screen-shots/supplier.png" alt="Menu Section" width="600"/>
-<img src="screen-shots/category.png" alt="Menu Section" width="600"/>
-<img src="screen-shots/product.png" alt="Menu Section" width="600"/>
 
